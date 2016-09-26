@@ -132,19 +132,19 @@ void loop() {
       digitalWrite(lightRelay2, HIGH);
       lightCycle = false;
     }
-    if (now.hour() == 18 && now.minute() == 0) {
+    if (now.hour() == 18 && now.minute() == 30) {
       digitalWrite (pumpRelay, LOW);
       pumpCycle = true;
     }
-    if (now.hour() == 18 && now.minute() == 15) {
+    if (now.hour() == 18 && now.minute() == 45) {
       digitalWrite (pumpRelay, HIGH);
       pumpCycle = false;
     }
-    if (now.hour() == 3 && now.minute() == 0) {
+    if (now.hour() == 3 && now.minute() == 30) {
       digitalWrite (pumpRelay, LOW);
       pumpCycle = true;
     }
-    if (now.hour() == 3 && now.minute() == 15) {
+    if (now.hour() == 3 && now.minute() == 45) {
       digitalWrite (pumpRelay, HIGH);
       pumpCycle = false;
     }
