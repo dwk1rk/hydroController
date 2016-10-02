@@ -113,10 +113,10 @@ void loop() {
   if (isVegetative) {
     lcd.setCursor (9, 0);
     lcd.print ("VEG");
-    int minTemp = 70;
-    int maxTemp = 85;
-    int minHumid = 40;
-    int maxHumid = 70;
+    //int minTemp = 70;
+    //int maxTemp = 85;
+    //int minHumid = 40;
+    //int maxHumid = 70;
     if (now.hour() >= 18 && now.hour() <= 23 && digitalRead(lightSwitch) == HIGH) {
       digitalWrite(lightRelay1, LOW);
       digitalWrite(lightRelay2, LOW);
@@ -149,10 +149,8 @@ void loop() {
       pumpCycle = false;
     }
     float h = dht.readHumidity();
-
     if (h <= 65) {
       digitalWrite(humidifierRelay, LOW);
-
     }
     if (h == 70) {
       digitalWrite(humidifierRelay, HIGH);
@@ -162,10 +160,10 @@ void loop() {
   if (isFlowering) {
     lcd.setCursor (9, 0);
     lcd.print ("FLW");
-    int minTemp = 65;
-    int maxTemp = 80;
-    int minHumid = 40;
-    int maxHumid = 50;
+    //int minTemp = 65;
+    //int maxTemp = 80;
+    //int minHumid = 40;
+    //int maxHumid = 50;
     if (now.hour() >= 18 && now.hour() <= 23 && digitalRead(lightSwitch) == HIGH) {
       digitalWrite(lightRelay1, LOW);
       digitalWrite(lightRelay2, LOW);
@@ -185,12 +183,12 @@ void loop() {
       digitalWrite (pumpRelay, LOW);
       pumpCycle = true;
     }
-    if (now.hour() == 0 && now.minute() == 20) {
+    if (now.hour() == 0 && now.minute() == 15) {
       digitalWrite(pumpRelay, HIGH);
       pumpCycle = false;
     }
     float h = dht.readHumidity();
-    if (h <= 40) {
+    if (h <= 45) {
       digitalWrite(humidifierRelay, LOW);
 
     }
@@ -203,7 +201,6 @@ void loop() {
   delay(250);
   lcd.clear();
   lcd.begin(16, 2);
-
 }
 
 
@@ -273,58 +270,51 @@ void vent() {
   DateTime now = rtc.now();
   int fanRelayState = digitalRead(fanRelay);
   float f = dht.readTemperature(true);
-
-  if (lightCycle == true && digitalRead(lightSwitch) == HIGH) {
-    if (f >= 80){
-      digitalWrite(fanRelay, LOW);
-      fanCycle = true;
+  if (isVegetative) {
+    if (lightCycle == true && digitalRead(lightSwitch) == HIGH) {
+      if (f >= 80) {
+        digitalWrite(fanRelay, LOW);
+        fanCycle = true;
       }
-    if (f <= 76.5){
-      digitalWrite(fanRelay, HIGH);
-      fanCycle = false;
+      if (f <= 76.5) {
+        digitalWrite(fanRelay, HIGH);
+        fanCycle = false;
       }
-    
-    /*if (now.minute() >= 1   && now.minute() < 15 && f >= 77) {
-      digitalWrite(fanRelay, LOW);
-      fanCycle = true;
-    }
-    else if (now.minute() >= 20  && now.minute() < 35 && f >= 77) {
-      digitalWrite(fanRelay, LOW);
-      fanCycle = true;
     }
 
-    else if (now.minute() >= 40 && now.minute() < 55 && f >= 77) {
-      digitalWrite(fanRelay, LOW);
-      fanCycle = true;
-    }
-    else {
-      digitalWrite(fanRelay, HIGH);
-      fanCycle = false;
-    }
-    */
-  }
-  if (lightCycle == false) {
-    if (now.minute() >= 30  && now.minute() <= 35) {
-      digitalWrite(fanRelay, LOW);
-      fanCycle = true;
-    }
-    else {
-      digitalWrite(fanRelay, HIGH);
-      fanCycle = false;
+    if (lightCycle == false) {
+      if (now.minute() >= 30  && now.minute() <= 35) {
+        digitalWrite(fanRelay, LOW);
+        fanCycle = true;
+      }
+      else {
+        digitalWrite(fanRelay, HIGH);
+        fanCycle = false;
+      }
     }
   }
-}
+  if (isFlowering) {
+    if (lightCycle == true && digitalRead(lightSwitch) == HIGH) {
+      if (f >= 75) {
+        digitalWrite(fanRelay, LOW);
+        fanCycle = true;
+      }
+      if (f <= 70.5) {
+        digitalWrite(fanRelay, HIGH);
+        fanCycle = false;
+      }
+    }
 
-
-void pump() {
-  DateTime now = rtc.now();
-  if (now.hour() == 16) {
-    digitalWrite(pumpRelay, LOW);
-    pumpCycle = true;
-  }
-  if (now.hour() == 18 && now.minute() == 20) {
-    digitalWrite(pumpRelay, HIGH);
-    pumpCycle = false;
+    if (lightCycle == false) {
+      if (now.minute() >= 30  && now.minute() <= 35) {
+        digitalWrite(fanRelay, LOW);
+        fanCycle = true;
+      }
+      else {
+        digitalWrite(fanRelay, HIGH);
+        fanCycle = false;
+      }
+    }
   }
 }
 
